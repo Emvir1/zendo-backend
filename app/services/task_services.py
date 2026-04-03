@@ -4,7 +4,7 @@ from app.models.task_model import Task
 
 def get_all_tasks():
     tasks = Task.query.all()
-    return [task.get_task() for task in tasks]
+    return [task.get_task() for task in tasks], "Tasks retrieved successfully", 200
 
 
 def create_task(data):
@@ -16,4 +16,4 @@ def create_task(data):
     )
     db.session.add(task)
     db.session.commit()
-    return task.get_task()
+    return task.get_task(), "Task created successfully", 201

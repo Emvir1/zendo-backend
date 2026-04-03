@@ -1,23 +1,18 @@
-from flask import jsonify, request
+from flask import request
 from flask_jwt_extended import get_jwt_identity
-from marshmallow import ValidationError
-from app.services.task_services import get_all_tasks, create_task
+from app.services import task_services
 from app.validations.task_validations import TaskSchema
 
 
 class TaskResource:
-    schema = TaskSchema()
 
     def get(self):
-        tasks = get_all_tasks()
-        return jsonify({"tasks": tasks}), 200
+        tasks, message, status_code = task_services.get_all_tasks()
+        return {"message": message, "tasks": tasks}, status_code
 
     def post(self):
-        try:
-            data = self.schema.load(request.get_json() or {})
-        except ValidationError as e:
-            return jsonify({"errors": e.messages}), 422
-
+        schema = TaskSchema()
+        data = schema.load(request.get_json())
         data["user_id"] = get_jwt_identity()
-        task = create_task(data)
-        return jsonify({"task": task}), 201
+        task, message, status_code = task_services.create_task(data)
+        return {"message": message, "task": task}, status_code

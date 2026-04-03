@@ -1,5 +1,5 @@
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_jwt_extended import create_access_token, get_csrf_token
+from flask_jwt_extended import create_access_token
 from app.extensions import db
 from app.models.user_model import User
 
@@ -7,7 +7,7 @@ from app.models.user_model import User
 def register_user(data):
     existing = User.query.filter_by(username=data["username"]).first()
     if existing:
-        return None, {"username": "already taken"}
+        return None, "Username already taken", 409
 
     user = User(
         username=data["username"],
@@ -20,17 +20,13 @@ def register_user(data):
     )
     db.session.add(user)
     db.session.commit()
-    return user.get_user(), None
+    return user.get_user(), "User registered successfully", 201
 
 
 def login_user(data):
     user = User.query.filter_by(username=data["username"]).first()
     if not user or not check_password_hash(user.password, data["password"]):
-        return None, {"message": "Invalid username or password"}
+        return None, "Invalid username or password", 401
 
     access_token = create_access_token(identity=str(user.id))
-    return {
-        "access_token_cookie": access_token,
-        "csrf_access_token": get_csrf_token(access_token),
-        "user": user.get_user(),
-    }, None
+    return {"access_token": access_token, "user": user.get_user()}, "Login successful", 200

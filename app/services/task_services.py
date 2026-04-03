@@ -4,7 +4,7 @@ from app.models.task_model import Task
 
 def get_all_tasks():
     tasks = Task.query.all()
-    return [task.get_task() for task in tasks], "Tasks retrieved successfully", 200
+    return [task.all_tasks() for task in tasks], 200
 
 
 def create_task(data):

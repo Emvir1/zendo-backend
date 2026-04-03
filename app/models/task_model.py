@@ -35,3 +35,11 @@ class Task(db.Model):
             "created_at": self.created_at.strftime("%Y-%m-%dT%H:%M:%S"),
             "updated_at": self.updated_at.strftime("%Y-%m-%dT%H:%M:%S"),
         }
+
+    def all_tasks(self):
+        return {
+            "id": self.id,
+            "title": self.title,
+            "description": self.description,
+            "status": self.status,
+        }

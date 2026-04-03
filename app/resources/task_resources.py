@@ -7,8 +7,8 @@ from app.validations.task_validations import TaskSchema
 class TaskResource:
 
     def get(self):
-        tasks, message, status_code = task_services.get_all_tasks()
-        return {"message": message, "tasks": tasks}, status_code
+        tasks, status_code = task_services.get_all_tasks()
+        return {"tasks": tasks}, status_code
 
     def post(self):
         schema = TaskSchema()

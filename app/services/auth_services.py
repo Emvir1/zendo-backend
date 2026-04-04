@@ -28,5 +28,5 @@ def login_user(data):
     if not user or not check_password_hash(user.password, data["password"]):
         return None, "Invalid username or password", 401
 
-    access_token = create_access_token(identity=str(user.id))
-    return {"access_token": access_token, "user": user.get_user()}, "Login successful", 200
+    access_token_cookie = create_access_token(identity=str(user.id))
+    return {"access_token_cookie": access_token_cookie, "user": user.get_user()}, "Login successful", 200

@@ -9,10 +9,12 @@ def create_app():
     app.config.from_object('app.config.Config')
     register_error_handlers(app)
 
-    db.init_app(app)
-    migrate.init_app(app, db)
     jwt_manager.init_app(app)
     cors.init_app(app)
+    db.init_app(app)
+    migrate.init_app(app, db)
+    
+    
 
     with app.app_context():
         from app.models import user_model, task_model  # noqa: F401

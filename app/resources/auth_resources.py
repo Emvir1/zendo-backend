@@ -19,6 +19,9 @@ class AuthResource:
         if status_code != 200:
             return {"message": message}, status_code
 
-        response = make_response({"message": message, "user": result["user"]}, status_code)
-        set_access_cookies(response, result["access_token"])
+        response = make_response(
+            {"message": message, "user": result["user"], "access_token_cookie": result["access_token_cookie"]},
+            status_code
+        )
+        set_access_cookies(response, result["access_token_cookie"])
         return response

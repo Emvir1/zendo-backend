@@ -4,19 +4,13 @@ from app.services import task_services
 from app.validations.task_validations import TaskSchema, TaskUpdateSchema
 
 
-class TaskResource:
+class TaskListResource:
+    """Handles /api/tasks/ — collection endpoints."""
 
-    def get_all(self):
+    def get(self):
         user_id = get_jwt_identity()
         tasks, status_code = task_services.get_all_tasks(user_id)
         return {"tasks": tasks}, status_code
-
-    def get_one(self, task_id):
-        user_id = get_jwt_identity()
-        task, message, status_code = task_services.get_task_by_id(task_id, user_id)
-        if status_code != 200:
-            return {"message": message}, status_code
-        return {"task": task}, status_code
 
     def post(self):
         schema = TaskSchema()
@@ -24,6 +18,17 @@ class TaskResource:
         data["user_id"] = get_jwt_identity()
         task, message, status_code = task_services.create_task(data)
         return {"message": message, "task": task}, status_code
+
+
+class TaskDetailResource:
+    """Handles /api/tasks/<id> — single task endpoints."""
+
+    def get(self, task_id):
+        user_id = get_jwt_identity()
+        task, message, status_code = task_services.get_task_by_id(task_id, user_id)
+        if status_code != 200:
+            return {"message": message}, status_code
+        return {"task": task}, status_code
 
     def patch(self, task_id):
         schema = TaskUpdateSchema()

@@ -35,7 +35,7 @@ class User(db.Model):
             "first_name": self.first_name,
             "last_name": self.last_name,
             "middle_name": self.middle_name,
-            "birth_date": self.birth_date,
+            "birth_date": self.birth_date.strftime("%Y-%m-%d") if self.birth_date else None,
             "gender": self.gender,
             "created_at": self.created_at.strftime("%Y-%m-%dT%H:%M:%S"),
             "updated_at": self.updated_at.strftime("%Y-%m-%dT%H:%M:%S"),

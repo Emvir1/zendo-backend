@@ -1,23 +1,10 @@
 from marshmallow import Schema, fields, validates, ValidationError, pre_load
 
 
-class RegisterSchema(Schema):
-    username = fields.Str(
-        required=True,
-        error_messages={"required": "is required"}
-    )
-    password = fields.Str(
-        required=True,
-        error_messages={"required": "is required"}
-    )
-    first_name = fields.Str(
-        required=True,
-        error_messages={"required": "is required"}
-    )
-    last_name = fields.Str(
-        required=True,
-        error_messages={"required": "is required"}
-    )
+class UserSchema(Schema):
+    username = fields.Str(load_default=None)
+    first_name = fields.Str(load_default=None)
+    last_name = fields.Str(load_default=None)
     middle_name = fields.Str(load_default=None)
     birth_date = fields.Date(load_default=None)
     gender = fields.Str(load_default=None)
@@ -34,23 +21,24 @@ class RegisterSchema(Schema):
 
     @validates("username")
     def validate_username(self, value, **kwargs):
+        if value is None:
+            return
         if not value.strip():
             raise ValidationError("must not be blank")
         if len(value) > 255:
             raise ValidationError("must not exceed 255 characters")
 
-    @validates("password")
-    def validate_password(self, value, **kwargs):
-        if len(value) < 8:
-            raise ValidationError("must be at least 8 characters")
-
     @validates("first_name")
     def validate_first_name(self, value, **kwargs):
+        if value is None:
+            return
         if not value.strip():
             raise ValidationError("must not be blank")
 
     @validates("last_name")
     def validate_last_name(self, value, **kwargs):
+        if value is None:
+            return
         if not value.strip():
             raise ValidationError("must not be blank")
 
@@ -61,14 +49,3 @@ class RegisterSchema(Schema):
         allowed = {"male", "female", "other"}
         if value.lower() not in allowed:
             raise ValidationError(f"must be one of: {', '.join(sorted(allowed))}")
-
-
-class LoginSchema(Schema):
-    username = fields.Str(
-        required=True,
-        error_messages={"required": "is required"}
-    )
-    password = fields.Str(
-        required=True,
-        error_messages={"required": "is required"}
-    )

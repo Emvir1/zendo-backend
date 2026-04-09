@@ -8,10 +8,13 @@ class Task(db.Model):
     __tablename__ = 'tasks'
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=False)
+
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id", name="fk_tasks_user_id"), nullable=False)
+    list_id: Mapped[int] = mapped_column(ForeignKey("lists.id", name="fk_tasks_list_id"), nullable=True)
+
     title: Mapped[str] = mapped_column(String(255), nullable=False)
     description: Mapped[str] = mapped_column(Text, nullable=True)
-    status: Mapped[str] = mapped_column(String(50), nullable=False, default='pending')
+    status: Mapped[str] = mapped_column(String(50), default='pending')
 
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
@@ -24,6 +27,7 @@ class Task(db.Model):
     )
 
     user: Mapped["User"] = relationship("User", back_populates="tasks")
+    list: Mapped["List"] = relationship("List", back_populates="tasks")
 
     def get_task(self):
         return {

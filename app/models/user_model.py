@@ -27,6 +27,7 @@ class User(db.Model):
     )
 
     tasks: Mapped[list["Task"]] = relationship("Task", back_populates="user", lazy="select")
+    lists: Mapped[list["List"]] = relationship("List", back_populates="user", lazy="select")
 
     def get_user(self):
         return {

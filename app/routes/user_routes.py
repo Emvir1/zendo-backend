@@ -1,9 +1,9 @@
 from flask import Blueprint
 from flask_jwt_extended import jwt_required
-from app.resources.user_resources import UserListResource, UserDetailResource
+from app.resources.user_resources import UserResource, UserDetailResource
 
 user_bp = Blueprint("users", __name__, url_prefix="/api/users")
-user_list = UserListResource()
+user_list = UserResource()
 user_detail = UserDetailResource()
 
 

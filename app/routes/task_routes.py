@@ -1,9 +1,9 @@
 from flask import Blueprint
 from flask_jwt_extended import jwt_required
-from app.resources.task_resources import TaskListResource, TaskDetailResource
+from app.resources.task_resources import TaskResource, TaskDetailResource
 
 task_bp = Blueprint("tasks", __name__, url_prefix="/api/tasks")
-task_list = TaskListResource()
+task_list = TaskResource()
 task_detail = TaskDetailResource()
 
 

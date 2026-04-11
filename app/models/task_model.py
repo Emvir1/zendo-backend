@@ -33,6 +33,7 @@ class Task(db.Model):
         return {
             "id": self.id,
             "user_id": self.user_id,
+            "list_id": self.list_id,
             "title": self.title,
             "description": self.description,
             "status": self.status,
@@ -43,7 +44,9 @@ class Task(db.Model):
     def all_tasks(self):
         return {
             "id": self.id,
+            "list_id": self.list_id,
             "title": self.title,
             "description": self.description,
             "status": self.status,
+            "created_at": self.created_at.strftime("%Y-%m-%dT%H:%M:%S"),
         }

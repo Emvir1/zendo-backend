@@ -1,3 +1,4 @@
+from http import HTTPStatus
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_jwt_extended import create_access_token
 from app.extensions import db
@@ -7,7 +8,7 @@ from app.models.user_model import User
 def register_user(data):
     existing = User.query.filter_by(username=data["username"]).first()
     if existing:
-        return None, "Username already taken", 409
+        return None, "Username already taken", HTTPStatus.CONFLICT
 
     user = User(
         username=data["username"],
@@ -20,13 +21,13 @@ def register_user(data):
     )
     db.session.add(user)
     db.session.commit()
-    return user.get_user(), "User registered successfully", 201
+    return user.get_user(), HTTPStatus.CREATED
 
 
 def login_user(data):
     user = User.query.filter_by(username=data["username"]).first()
     if not user or not check_password_hash(user.password, data["password"]):
-        return None, "Invalid username or password", 401
+        return None, "Invalid username or password", HTTPStatus.UNAUTHORIZED
 
     access_token_cookie = create_access_token(identity=str(user.id))
-    return {"access_token_cookie": access_token_cookie, "user": user.get_user()}, "Login successful", 200
+    return {"access_token_cookie": access_token_cookie, "user": user.get_user()}, HTTPStatus.OK

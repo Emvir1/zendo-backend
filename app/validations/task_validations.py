@@ -8,6 +8,7 @@ class TaskSchema(Schema):
     )
     description = fields.Str(load_default=None)
     status = fields.Str(load_default="pending")
+    list_id = fields.Int(load_default=None, allow_none=True)
 
     @validates("title")
     def validate_title(self, value, **kwargs):
@@ -21,6 +22,7 @@ class TaskUpdateSchema(Schema):
     title = fields.Str(load_default=None)
     description = fields.Str(load_default=None)
     status = fields.Str(load_default=None)
+    list_id = fields.Int(load_default=None, allow_none=True)
 
     @validates("title")
     def validate_title(self, value, **kwargs):

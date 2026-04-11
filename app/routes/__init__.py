@@ -2,13 +2,15 @@ from flask import Blueprint
 from app.routes.auth_routes import auth_bp
 from app.routes.task_routes import task_bp
 from app.routes.user_routes import user_bp
+from app.routes.list_routes import list_bp
+from http import HTTPStatus
 
 index_bp = Blueprint("index", __name__)
 
 
 @index_bp.get("/")
 def index():
-    return {"message": "ZenDo API is running", "status": "ok"}, 200
+    return {"message": "ZenDo API is running", "status": "ok"}, HTTPStatus.OK
 
 
 all_blueprints = [
@@ -16,6 +18,7 @@ all_blueprints = [
     auth_bp,
     task_bp,
     user_bp,
+    list_bp,
 ]
 
 

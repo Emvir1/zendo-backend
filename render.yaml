@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: zendo-backend
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: flask db upgrade && gunicorn app:app
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: zendb
+          property: connectionString
+      - key: JWT_SECRET_KEY
+        generateValue: true
+      - key: FLASK_APP
+        value: app.py
+      - key: PYTHON_VERSION
+        value: 3.11.0

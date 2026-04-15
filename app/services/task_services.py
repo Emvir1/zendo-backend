@@ -76,5 +76,5 @@ def delete_task(task_id, user_id):
 def get_task_by_id(task_id, user_id):
     task = Task.query.filter_by(id=task_id, user_id=int(user_id)).first()
     if not task:
-        return None, "Task not found", HTTPStatus.NOT_FOUND
+        return None, HTTPStatus.NOT_FOUND
     return task.get_task(), HTTPStatus.OK

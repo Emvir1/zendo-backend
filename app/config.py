@@ -4,8 +4,15 @@ from datetime import timedelta
 
 load_dotenv()
 
+def _db_uri():
+    uri = os.environ.get("DATABASE_URL", "")
+
+    if uri.startswith("postgres://"):
+        uri = uri.replace("postgres://", "postgresql://", 1)
+    return uri
+
 class Config:
-    SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL", "sqlite:///zendo.sqlite")
+    SQLALCHEMY_DATABASE_URI = _db_uri()
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     JWT_SECRET_KEY = os.environ.get("JWT_SECRET_KEY", "dev-secret-change-in-production!!")

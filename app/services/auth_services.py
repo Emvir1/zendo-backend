@@ -8,7 +8,7 @@ from app.models.user_model import User
 def register_user(data):
     existing = User.query.filter_by(username=data["username"]).first()
     if existing:
-        return None, "Username already taken", HTTPStatus.CONFLICT
+        return None, HTTPStatus.CONFLICT
 
     user = User(
         username=data["username"],
@@ -27,7 +27,7 @@ def register_user(data):
 def login_user(data):
     user = User.query.filter_by(username=data["username"]).first()
     if not user or not check_password_hash(user.password, data["password"]):
-        return None, "Invalid username or password", HTTPStatus.UNAUTHORIZED
+        return None, HTTPStatus.UNAUTHORIZED
 
     access_token_cookie = create_access_token(identity=str(user.id))
     return {"access_token_cookie": access_token_cookie, "user": user.get_user()}, HTTPStatus.OK

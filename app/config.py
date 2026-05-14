@@ -14,6 +14,7 @@ def _db_uri():
 class Config:
     SQLALCHEMY_DATABASE_URI = _db_uri()
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    SQLALCHEMY_ENGINE_OPTIONS = {"connect_args": {"sslmode": "require"}}
 
     JWT_SECRET_KEY = os.environ.get("JWT_SECRET_KEY", "dev-secret-change-in-production!!")
     JWT_COOKIE_SECURE = False  # for development
